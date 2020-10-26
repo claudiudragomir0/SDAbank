@@ -1,8 +1,6 @@
 package hibernate.entity;
+
 import javax.persistence.*;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.security.Timestamp;
 
 @Entity(name = "TransactionHistory")
 @Table(name = "transactionhistory")
@@ -19,10 +17,8 @@ public class TransactionHistory {
     private double amount;
     @Column(name = "withdraw")
     private double withdraw;
-    @Column(name = "balance")
-    private double balance;
-    @Column(name = "currency")
-    private String currency;
+    @Column(name = "balanceAtTheTimeOfTransaction")
+    private double balanceAtTheTimeOfTransaction;
     @Column(name = "changed_at")
     @Temporal(TemporalType.TIMESTAMP)
     private java.util.Date changed_at;
@@ -32,13 +28,12 @@ public class TransactionHistory {
 
     public TransactionHistory() {
     }
-    public TransactionHistory(int id, double deposit, double amount, double withdraw, double balance, String currency, java.util.Date changed_at) {
+    public TransactionHistory(int id, double deposit, double amount, double withdraw, double balanceAtTheTimeOfTransaction, java.util.Date changed_at) {
         this.id = id;
         this.deposit = deposit;
         this.amount = amount;
         this.withdraw = withdraw;
-        this.balance = balance;
-        this.currency = currency;
+        this.balanceAtTheTimeOfTransaction = balanceAtTheTimeOfTransaction;
         this.changed_at = changed_at;
     }
 
@@ -83,20 +78,13 @@ public class TransactionHistory {
     }
 
     public double getBalance() {
-        return balance;
+        return balanceAtTheTimeOfTransaction;
     }
 
     public void setBalance(double balance) {
-        this.balance = balance;
+        this.balanceAtTheTimeOfTransaction = balance;
     }
 
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
 
     public java.util.Date getChanged_at() {
         return changed_at;
@@ -113,8 +101,7 @@ public class TransactionHistory {
                 ", deposit=" + deposit +
                 ", amount=" + amount +
                 ", withdraw=" + withdraw +
-                ", balance=" + balance +
-                ", currency='" + currency + '\'' +
+                ", balanceAtTheTimeOfTransaction=" + balanceAtTheTimeOfTransaction +
                 ", changed_at=" + changed_at +
                 '}';
     }

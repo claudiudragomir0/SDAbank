@@ -5,7 +5,9 @@ import hibernate.util.Util;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import java.io.IOException;
+import org.hibernate.query.NativeQuery;
+
+import java.util.List;
 
 
 public class CustomerAPI {
@@ -82,6 +84,38 @@ public class CustomerAPI {
             }
             System.out.println(e.getMessage());
         }
+    }
+    public Customer findByUsername(String username) {
+        Customer result = null;
+        try (Session session = Util.getSessionFactory().openSession()) {
+            String query = "select * from customer where username = '" + username + "'";
+
+            NativeQuery<Customer> nquery = session.createNativeQuery(query, Customer.class);
+            List<Customer> foundCustomers = nquery.getResultList();
+            if (foundCustomers.isEmpty()) {
+                return result;
+            } else {
+                result = foundCustomers.get(0);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return result;
+    }
+
+
+
+    public long findIdByPassword (String password){
+        long result = 0;
+        try (Session session = Util.getSessionFactory().openSession()) {
+            String query = "select customer_id from customer where password =\"" + password + "\"";
+            NativeQuery<Customer> nativeQuery = session.createNativeQuery(query);
+            result = nativeQuery.getFirstResult();
+            session.close();
+        } catch (HibernateException e) {
+            System.out.println(e.getMessage());
+        }
+        return result;
     }
 
 }

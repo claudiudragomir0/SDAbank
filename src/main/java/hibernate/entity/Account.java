@@ -1,19 +1,25 @@
 package hibernate.entity;
 
 import hibernate.util.Iban;
-import javax.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "Account")
 @Table(name = "account")
 public class Account {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "currency")
+    private currency currency;
     @Column(name = "IBAN")
     private String iban;
+    @Column(name = "balance")
+    private double balance;
     @Enumerated(EnumType.STRING)
     @Column(name = "accountType")
     private accountType accountType;
@@ -28,13 +34,29 @@ public class Account {
     public Account() {
     }
 
-    public Account(int id, String iban, accountType accountType,Customer customer, List<TransactionHistory> transactionHistory) {
+    public Account(int id,currency currency, String iban, double balance, accountType accountType,Customer customer, List<TransactionHistory> transactionHistory) {
         this.id = id;
+        this.currency=currency;
         this.iban = iban;
+        this.balance=balance;
         this.accountType = accountType;
         this.customer = customer;
         this.transactionHistory = transactionHistory;
 
+    }
+
+    public hibernate.entity.currency getCurrency() {
+        return currency;
+    }
+    public void setCurrency(hibernate.entity.currency currency) {
+        this.currency = currency;
+    }
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
     public Customer getCustomer() {
@@ -69,13 +91,20 @@ public class Account {
         switch (accountType) {
             case "CREDIT EURO":
                    this.accountType = hibernate.entity.accountType.CREDIT_EURO;
+                   this.currency=hibernate.entity.currency.EURO;
                    break;
             case "CREDIT RON":
-                    this.accountType = hibernate.entity.accountType.CREDIT_RON;
+                   this.accountType = hibernate.entity.accountType.CREDIT_RON;
+                this.currency=hibernate.entity.currency.RON;
+                   break;
             case "DEBIT EURO":
-                    this.accountType = hibernate.entity.accountType.DEBIT_EURO;
+                   this.accountType = hibernate.entity.accountType.DEBIT_EURO;
+                this.currency=hibernate.entity.currency.EURO;
+                   break;
             case "DEBIT RON":
-                    this.accountType = hibernate.entity.accountType.DEBIT_RON;
+                   this.accountType = hibernate.entity.accountType.DEBIT_RON;
+                this.currency=hibernate.entity.currency.RON;
+                   break;
         }
     }
 
@@ -96,15 +125,16 @@ public class Account {
         tempTransaction.setAccount(this);
     }
 
-
     @Override
     public String toString() {
         return "Account{" +
                 "id=" + id +
+                ", currency=" + currency +
                 ", iban='" + iban + '\'' +
-                ", accountType='" + accountType + '\'' +
+                ", balance=" + balance +
+                ", accountType=" + accountType +
                 ", customer=" + customer +
-                ", transactionHistoryList=" + transactionHistory +
+                ", transactionHistory=" + transactionHistory +
                 '}';
     }
 }

@@ -24,10 +24,13 @@ public class Util {
                 Properties settings = new Properties();
                 settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
                 settings.put(Environment.URL, "jdbc:mysql://localhost:3306/sdabank?serverTimezone=UTC");
+                // settings.put(Environment.URL, "jdbc:mysql://localhost:3306/sdabank?serverTimezone=EEST");
+
                 settings.put(Environment.USER, "root");
                 settings.put(Environment.PASS, "java4Bilionaires100%");
                 settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
                 settings.put(Environment.SHOW_SQL, "true");
+                //  settings.put(Environment.)
                 settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
                 settings.put(Environment.HBM2DDL_AUTO, "update");
 
@@ -37,11 +40,11 @@ public class Util {
                 configuration.addAnnotatedClass(Customer.class);
                 configuration.addAnnotatedClass(TransactionHistory.class);
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-                .applySettings(configuration.getProperties()).build();
+                        .applySettings(configuration.getProperties()).build();
 
                 sessionFactory= configuration.buildSessionFactory(serviceRegistry);
             }catch (Exception e){
-            e.printStackTrace();
+                e.printStackTrace();
             }
         }
         return sessionFactory;

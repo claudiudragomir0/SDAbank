@@ -1,6 +1,5 @@
 package hibernate.repository;
 
-import hibernate.entity.Account;
 import hibernate.entity.TransactionHistory;
 import hibernate.util.Util;
 import org.hibernate.HibernateException;
@@ -33,32 +32,33 @@ public class TransactionHistoryAPI {
     }
 
 
-    public TransactionHistory update(int id, TransactionHistory transactionHistoryDetails) {
-        TransactionHistory result = null;
-        Transaction transaction = null;
-        try (Session session = Util.getSessionFactory().openSession()) {
-            TransactionHistory transactionToBeUpdated = session.find(TransactionHistory.class, id);
+//    public TransactionHistory update(int id, TransactionHistory transactionHistoryDetails) {
+//        TransactionHistory result = null;
+//        Transaction transaction = null;
+//        try (Session session = Util.getSessionFactory().openSession()) {
+//            TransactionHistory transactionToBeUpdated = session.find(TransactionHistory.class, id);
+//
+//            transaction = session.beginTransaction();
+//
+//            transactionToBeUpdated.setDeposit(transactionHistoryDetails.getDeposit());
+//            transactionToBeUpdated.setAmount(transactionHistoryDetails.getAmount());
+//            transactionToBeUpdated.setBalance(transactionToBeUpdated.getBalance());
+//            transactionToBeUpdated.setWithdraw(transactionToBeUpdated.getWithdraw());
+//            transactionToBeUpdated.setCurrency(transactionToBeUpdated.getCurrency());
+//
+//            session.update(transactionToBeUpdated);
+//
+//            transaction.commit();
+//            result = session.find(TransactionHistory.class, id);
+//        } catch (HibernateException e) {
+//            if (transaction != null) {
+//                transaction.rollback();
+//            }
+//            System.out.println(e.getMessage());
+//        }
+//        return result;
+//    }
 
-            transaction = session.beginTransaction();
-
-            transactionToBeUpdated.setDeposit(transactionHistoryDetails.getDeposit());
-            transactionToBeUpdated.setAmount(transactionHistoryDetails.getAmount());
-            transactionToBeUpdated.setBalance(transactionToBeUpdated.getBalance());
-            transactionToBeUpdated.setWithdraw(transactionToBeUpdated.getWithdraw());
-            transactionToBeUpdated.setCurrency(transactionToBeUpdated.getCurrency());
-
-            session.update(transactionToBeUpdated);
-
-            transaction.commit();
-            result = session.find(TransactionHistory.class, id);
-        } catch (HibernateException e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            System.out.println(e.getMessage());
-        }
-        return result;
-    }
 
     public void delete(int id) {
         Transaction transaction = null;
@@ -77,4 +77,5 @@ public class TransactionHistoryAPI {
             System.out.println(e.getMessage());
         }
     }
+
 }
