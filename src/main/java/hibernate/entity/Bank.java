@@ -4,22 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "Bank")
-@Table(name = "bank")
+@Table
 
 public class Bank {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private int id;
     @Enumerated(EnumType.STRING)
-    @Column(name = "bankName")
     bankName bankName;
     @ManyToMany(fetch=FetchType.LAZY,
             cascade= {CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(
-            name="bank_customer",
             joinColumns=@JoinColumn(name="bank_id"),
             inverseJoinColumns=@JoinColumn(name="customer_id")
     )

@@ -24,6 +24,24 @@ public class CustomerAPI {
             }
         }
     }
+    public Customer findById(int id) {
+        Customer result = null;
+        try (Session session = Util.getSessionFactory().openSession()) {
+            String query = "select * from customer where id = '" + id + "'";
+            NativeQuery<Customer> nquery = session.createNativeQuery(query, Customer.class);
+            List<Customer> foundCustomers = nquery.getResultList();
+            if (foundCustomers.isEmpty()) {
+                return result;
+            } else {
+                result = foundCustomers.get(0);
+            }
+            //session.getTransaction.commit();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return result;
+    }
 
 
     public Customer readByUserName(String userName) {
@@ -37,7 +55,7 @@ public class CustomerAPI {
     }
 
 
-    public Customer update(String userName, Customer customerDetails) {
+    public Customer update(String userName, Customer customer) {
         Customer result = null;
         Transaction transaction = null;
         try (Session session = Util.getSessionFactory().openSession()) {
@@ -45,15 +63,15 @@ public class CustomerAPI {
 
             transaction = session.beginTransaction();
 
-            customerToBeUpdated.setFirstName(customerDetails.getFirstName());
-            customerToBeUpdated.setLastName(customerDetails.getLastName());
-            customerToBeUpdated.setDateOfBirth(customerDetails.getDateOfBirth());
-            customerToBeUpdated.setCnp(customerDetails.getCnp());
-            customerToBeUpdated.setAddress(customerDetails.getAddress());
-            customerToBeUpdated.setEmail(customerDetails.getEmail());
-            customerToBeUpdated.setPhone(customerDetails.getPhone());
-            customerToBeUpdated.setUserName(customerDetails.getUserName());
-            customerToBeUpdated.setPassword(customerDetails.getPassword());
+            customerToBeUpdated.setFirstName(customer.getFirstName());
+            customerToBeUpdated.setLastName(customer.getLastName());
+            customerToBeUpdated.setDateOfBirth(customer.getDateOfBirth());
+            customerToBeUpdated.setCnp(customer.getCnp());
+            customerToBeUpdated.setAddress(customer.getAddress());
+            customerToBeUpdated.setEmail(customer.getEmail());
+            customerToBeUpdated.setPhone(customer.getPhone());
+            customerToBeUpdated.setUserName(customer.getUserName());
+            customerToBeUpdated.setPassword(customer.getPassword());
 
             session.update(customerToBeUpdated);
 

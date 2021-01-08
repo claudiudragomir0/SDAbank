@@ -9,7 +9,7 @@ public class TransactionHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id" ,updatable = false, nullable = false)
     private int id;
     @Column(name = "deposit")
     private double deposit;
@@ -17,22 +17,26 @@ public class TransactionHistory {
     private double amount;
     @Column(name = "withdraw")
     private double withdraw;
+    @Column(name = "currency")
+    private String currency;
     @Column(name = "balanceAtTheTimeOfTransaction")
     private double balanceAtTheTimeOfTransaction;
     @Column(name = "changed_at")
     @Temporal(TemporalType.TIMESTAMP)
     private java.util.Date changed_at;
-    @ManyToOne
+    @ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name="account_id")
     private Account account;
 
     public TransactionHistory() {
     }
-    public TransactionHistory(int id, double deposit, double amount, double withdraw, double balanceAtTheTimeOfTransaction, java.util.Date changed_at) {
+    public TransactionHistory(int id, double deposit, double amount, double withdraw,String currency, double balanceAtTheTimeOfTransaction, java.util.Date changed_at) {
         this.id = id;
         this.deposit = deposit;
         this.amount = amount;
         this.withdraw = withdraw;
+        this.currency=currency;
         this.balanceAtTheTimeOfTransaction = balanceAtTheTimeOfTransaction;
         this.changed_at = changed_at;
     }
@@ -94,6 +98,14 @@ public class TransactionHistory {
         this.changed_at = changed_at;
     }
 
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
     @Override
     public String toString() {
         return "TransactionHistory{" +
@@ -101,8 +113,10 @@ public class TransactionHistory {
                 ", deposit=" + deposit +
                 ", amount=" + amount +
                 ", withdraw=" + withdraw +
+                ", currency='" + currency + '\'' +
                 ", balanceAtTheTimeOfTransaction=" + balanceAtTheTimeOfTransaction +
                 ", changed_at=" + changed_at +
+                ", account=" + account +
                 '}';
     }
 }

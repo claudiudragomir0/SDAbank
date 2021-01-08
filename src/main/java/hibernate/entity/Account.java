@@ -2,33 +2,29 @@ package hibernate.entity;
 
 import hibernate.util.Iban;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "Account")
-@Table(name = "account")
+@Entity
+@Table
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private int id;
     @Enumerated(EnumType.STRING)
-    @Column(name = "currency")
     private currency currency;
-    @Column(name = "IBAN")
     private String iban;
-    @Column(name = "balance")
     private double balance;
     @Enumerated(EnumType.STRING)
-    @Column(name = "accountType")
     private accountType accountType;
     @ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name="customer_id")
+    @JoinColumn
     private Customer customer;
     @OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-    @JoinColumn(name="transaction_id")
+    @JoinColumn
     private List<TransactionHistory> transactionHistory;
 
     public Account() {

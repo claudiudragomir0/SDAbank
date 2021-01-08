@@ -7,7 +7,9 @@ import hibernate.entity.TransactionHistory;
 import hibernate.repository.AccountAPI;
 import hibernate.repository.BankAPI;
 import hibernate.util.Util;
-import org.hibernate.*;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,7 +34,7 @@ public class RegisterMenu extends JFrame {
     JLabel apptitle,signup, firstName, lastName,age, CNP, email, accountType, phone, address, branch, userName, password;
     JTextField boxFirstName, boxLastName, boxCNP, boxEmail, boxPhone, boxUserName, boxPassword;
     JTextArea boxAddress;
-    JComboBox boxAge, boxAccountType, boxBranch;
+    JComboBox boxAge,boxAge1,boxAge2, boxAccountType, boxBranch;
     JButton back,signupbtn;
     int color;
     RegisterMenu(String title,int v) {
@@ -61,7 +63,7 @@ public class RegisterMenu extends JFrame {
             lastName =new JLabel("Last Name:");
             lastName.setForeground(labelcolor);
             lastName.setFont(label);
-            age=new JLabel("Age:");
+            age=new JLabel("Date Of Birth:                              Day:          Month:          Year:" );
             age.setForeground(labelcolor);
             age.setFont(label);
             CNP =new JLabel("CNP:");
@@ -107,10 +109,17 @@ public class RegisterMenu extends JFrame {
             signupbtn.setCursor(handpointer);
             signupbtn.setBackground(btncolor);
             boxAge =new JComboBox();
-            boxAge.addItem(0);
-            for(int i=18;i<101;i++){
+            for(int i=0;i<32;i++){
             boxAge.addItem(i);
-        }
+            }
+            boxAge1 =new JComboBox();
+            for(int i=1;i<13;i++){
+            boxAge1.addItem(i);
+            }
+            boxAge2 =new JComboBox();
+            for(int i=1920;i<2002;i++){
+            boxAge2.addItem(i);
+            }
             boxAccountType =new JComboBox();
             boxAccountType.addItem("Select Account Type");
             boxAccountType.addItem("DEBIT EURO");
@@ -142,9 +151,11 @@ public class RegisterMenu extends JFrame {
 //casuta tlastname-----viitor---boxlastname
             boxLastName.setBounds(220,140,240,30);
 //scris age ----date of birth
-            age.setBounds(10,180,150,40);
+            age.setBounds(10,180,500,40);
 //casuta tage ---- boxdateofbirth
-            boxAge.setBounds(220,190,240,20);
+            boxAge.setBounds(250,190,35,20);
+            boxAge1.setBounds(335,190,35,20);
+            boxAge2.setBounds(410,190,50,20);
 //scris ----gender----viitor---branch
             branch.setBounds(10,210,150,40);
 //casuta ----tgender----viitor---branch
@@ -183,6 +194,8 @@ public class RegisterMenu extends JFrame {
             this.add(boxUserName);
             this.add(boxPassword);
             this.add(boxAge);
+            this.add(boxAge1);
+            this.add(boxAge2);
             this.add(boxAccountType);
             this.add(boxBranch);
             this.add(boxPhone);
@@ -314,7 +327,7 @@ public class RegisterMenu extends JFrame {
                         String textAddress = boxAddress.getText();
                         String textBranch = "" + (String) boxBranch.getSelectedItem();
                         String textAccounType = "" + (String) boxAccountType.getSelectedItem();
-                        String textAge = "" + (Integer) boxAge.getSelectedItem();
+                        String textAge =(Integer) boxAge.getSelectedItem()+"/"+(Integer) boxAge1.getSelectedItem()+"/"+(Integer) boxAge2.getSelectedItem();
                         String textEmail = boxEmail.getText();
                         int age = (int) boxAge.getSelectedItem();
                         float bal = 0;
@@ -341,10 +354,10 @@ public class RegisterMenu extends JFrame {
                             flag=1;
                             boxBranch.setForeground(Color.RED);
                         }
-                        if(age==0) {
-                            flag=1;
-                            boxAge.setForeground(Color.RED);
-                        }
+//                        if(age==0) {
+//                            flag=1;
+//                            boxAge.setForeground(Color.RED);
+//                        }
                         if(textEmail.equals("")||textEmail.equals("             Empty Field!")){
                             flag=1;
                             boxEmail.setFont(new Font("SansSerif",Font.BOLD,15));
@@ -454,8 +467,9 @@ public class RegisterMenu extends JFrame {
                                 TransactionHistory tempTransactionHistory = new TransactionHistory();
                                 tempAccount.addTransactions(tempTransactionHistory);
                                 session.save(tempAccount);
-                                int transactionId = tempTransactionHistory.getId();
+
                                 tempTransactionHistory.setAccount(tempAccount);
+                                tempTransactionHistory.setCurrency(""+tempAccount.getCurrency());
                                 tempTransactionHistory.setChanged_at(new Date());
                                 session.save(tempTransactionHistory);
 
