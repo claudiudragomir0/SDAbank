@@ -117,7 +117,7 @@ public class RegisterMenu extends JFrame {
             boxAge1.addItem(i);
             }
             boxAge2 =new JComboBox();
-            for(int i=1920;i<2002;i++){
+            for(int i=2002;i>1930;i--){
             boxAge2.addItem(i);
             }
             boxAccountType =new JComboBox();
@@ -474,7 +474,7 @@ public class RegisterMenu extends JFrame {
                                 session.save(tempTransactionHistory);
 
 
-                                session.getTransaction().commit();
+//                                session.getTransaction().commit();
                             } catch (HibernateException e) {
                                 if (transaction != null) {
                                     transaction.rollback();

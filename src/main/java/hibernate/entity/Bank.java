@@ -5,14 +5,13 @@ import java.util.List;
 
 @Entity(name = "Bank")
 @Table
-
 public class Bank {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Enumerated(EnumType.STRING)
-    bankName bankName;
+    private bankName bankName;
     @ManyToMany(fetch=FetchType.LAZY,
             cascade= {CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})

@@ -30,8 +30,8 @@ public class Util {
                 settings.put(Environment.SHOW_SQL, "true");
                 //  settings.put(Environment.)
                 settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-                settings.put(Environment.HBM2DDL_AUTO, "validate");
-                //settings.put(Environment.HBM2DDL_AUTO, "update");
+//                settings.put(Environment.HBM2DDL_AUTO, "validate");
+                settings.put(Environment.HBM2DDL_AUTO, "update");
                 //settings.put(Environment.HBM2DDL_AUTO, "create-drop");
 
 
